@@ -58,3 +58,23 @@ Progression is linked to short multiple-choice questions related to what they ha
 ### Live (Launch Product)
 - Launch the finished product.
 - Game delivers on all the key user stories.
+
+## Task 3.4 – Professional & Ethical Framework Alignment
+
+Our approach aligns with the **IEEE Software Engineering Code of Ethics**:
+
+- **Principle 1 (Public Interest)**: The game directly benefits student wellbeing by reducing anxiety around library navigation and provides equal access to library information for all students (new, returning, international).
+
+- **Principle 2 (Client & Employer)**: The game supports the University of Hull's strategic goals for improved student onboarding and reduces pressure on limited Hubble staff resources, allowing them to focus on more complex student issues.
+
+- **Principle 3 (Product Quality)**: Rigorous playtesting with target users, accessibility audits (WCAG 2.1 compliance), and quality assurance across multiple platforms ensure the game meets professional standards.
+
+- **Principle 4 (Integrity)**: We make transparent, defensible design decisions (e.g., choosing statues over staff as enemies for ethical reasons) and openly communicate limitations and scope constraints to stakeholders.
+
+- **Principle 5 (Management)**: Our team follows ethical project management practices with regular stakeholder consultation, clear documentation, and planned post-launch support and updates.
+
+- **Principle 6 (Profession)**: By documenting our ethical decision-making and accessibility approach, we contribute to industry best practices and demonstrate that student projects can meet professional standards.
+
+- **Principle 7 (Colleagues)**: We collaborated respectfully with library staff and student services in design decisions, protecting their professional reputation and incorporating their expertise throughout development.
+
+- **Principle 8 (Self)**: Our team actively learned new skills (Unreal Engine, game design, accessibility standards) and remains committed to reflecting on ethical decisions and improving future practice.
