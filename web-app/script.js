@@ -211,25 +211,16 @@ const PAGE_NAV = {
   'student-view-reports':  { label: 'My Reports',      icon: '📋', section: 'Student' },
   'student-book-meeting':  { label: 'Book Meeting',    icon: '📅', section: 'Student' },
   'student-view-meetings': { label: 'My Meetings',     icon: '📖', section: 'Student' },
-  // PS nav items
-  'ps-dashboard':          { label: 'Dashboard',       icon: '🏠', section: 'Supervisor' },
-  'ps-my-students':        { label: 'My Students',     icon: '👥', section: 'Supervisor' },
-  'ps-student-details':    { label: 'Student Details', icon: '👤', section: 'Supervisor' },
-  'ps-book-meeting':       { label: 'Book Meeting',    icon: '📅', section: 'Supervisor' },
-  'ps-manage-meetings':    { label: 'Manage Meetings', icon: '📋', section: 'Supervisor' },
-  // ST nav items
-  'st-dashboard':          { label: 'Dashboard',       icon: '🏠', section: 'Senior Tutor' },
-  'st-all-students':       { label: 'All Students',    icon: '👥', section: 'Senior Tutor' },
-  'st-ps-summary':         { label: 'PS Summary',      icon: '📊', section: 'Senior Tutor' },
 };
 
 const ROLE_PAGES = {
   student: ['student-dashboard','student-submit-report','student-view-reports','student-book-meeting','student-view-meetings'],
-  ps:      ['ps-dashboard','ps-my-students','ps-student-details','ps-book-meeting','ps-manage-meetings'],
-  st:      ['st-dashboard','st-all-students','st-ps-summary'],
 };
 
 function navigateTo(pageId) {
+  if (!PAGE_NAV[pageId]) {
+    pageId = 'student-dashboard';
+  }
   // Hide all page-inner divs
   document.querySelectorAll('.page-inner').forEach(el => el.classList.add('hidden'));
 
@@ -265,14 +256,6 @@ function renderPage(pageId) {
     case 'student-book-meeting': renderStudentBookMeeting(); break;
     case 'student-view-meetings':renderStudentViewMeetings(); break;
     case 'student-submit-report':renderStudentSubmitReport(); break;
-    case 'ps-dashboard':         renderPSDashboard(); break;
-    case 'ps-my-students':       renderPSMyStudents(); break;
-    case 'ps-student-details':   renderPSStudentDetails(); break;
-    case 'ps-book-meeting':      renderPSBookMeeting(); break;
-    case 'ps-manage-meetings':   renderPSManageMeetings(); break;
-    case 'st-dashboard':         renderSTDashboard(); break;
-    case 'st-all-students':      renderSTAllStudents(); break;
-    case 'st-ps-summary':        renderSTPSSummary(); break;
   }
 }
 
@@ -1160,7 +1143,7 @@ function login(email, password) {
   const user = state.users.find(u =>
     u.email.toLowerCase() === email.toLowerCase() && u.password === password
   );
-  return user || null;
+  return user && user.role === 'student' ? user : null;
 }
 
 function setCurrentUser(user) {
@@ -1176,18 +1159,16 @@ function showAuthLayout(user) {
 
   buildSidebar(user);
 
-  // Navigate to the user's dashboard
-  const dashboardPage = user.role === 'student' ? 'student-dashboard'
-    : user.role === 'ps' ? 'ps-dashboard' : 'st-dashboard';
-  navigateTo(dashboardPage);
+  // Navigate to the student's dashboard (only supported role)
+  navigateTo('student-dashboard');
 }
 
 function buildSidebar(user) {
   // User info
-  const roleLabels = { student: 'Student', ps: 'Personal Supervisor', st: 'Senior Tutor' };
+  const roleLabels = { student: 'Student' };
   document.getElementById('sidebar-user').innerHTML = `
     <div class="user-name">${escHtml(user.name)}</div>
-    <div class="user-role">${roleLabels[user.role]}</div>`;
+    <div class="user-role">${roleLabels[user.role] || 'Student'}</div>`;
 
   // Nav items for role
   const pages = ROLE_PAGES[user.role] || [];
@@ -1262,8 +1243,6 @@ function initLoginPage() {
     item.addEventListener('click', () => {
       const demos = {
         student: { email: 'george.spurrier@uni.ac.uk', pass: 'pass123' },
-        ps:      { email: 'xinhui.ma@uni.ac.uk',       pass: 'pass123' },
-        st:      { email: 'john.whelan@uni.ac.uk',      pass: 'pass123' },
       };
       const d = demos[item.dataset.demo];
       if (d) { emailEl.value = d.email; passEl.value = d.pass; }
@@ -1317,17 +1296,17 @@ function boot() {
   initLoginPage();
   initReportForm();
   initStudentMeetingForm();
-  initPSMeetingForm();
   initGlobalListeners();
 
   // Restore session
   const savedId = getSavedSession();
   if (savedId) {
-    const user = state.users.find(u => u.id === savedId);
+    const user = state.users.find(u => u.id === savedId && u.role === 'student');
     if (user) {
       setCurrentUser(user);
       return;
     }
+    clearSession();
   }
 
   // Show login
