@@ -37,7 +37,7 @@ const SEED_REPORTS = [
   { id: 'R017', studentId: 'S005', dateTime: '2024-03-08T10:00', wellbeing: 2, progress: 2, comments: 'Things are getting worse.' },
 ];
 
-const SEED_MEETINGS = [];
+const SEED_MEETINGS = []; // Intentionally empty; students can create meetings as needed
 
 /* =========================================================
    2. LOCAL STORAGE PERSISTENCE
