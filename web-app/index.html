@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Personal Supervisor System</title>
+  <title>Student Support Portal</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -28,8 +28,8 @@
       <div class="login-container">
         <div class="login-card">
           <div class="login-logo">
-            <div class="login-logo-icon">PS</div>
-            <h1 class="login-title">Personal Supervisor System</h1>
+            <div class="login-logo-icon">SP</div>
+            <h1 class="login-title">Student Support Portal</h1>
             <p class="login-subtitle">University of Technology — Department of Computer Science</p>
           </div>
 
@@ -56,16 +56,6 @@
                 <span>george.spurrier@uni.ac.uk</span>
                 <span class="text-muted">pass123</span>
               </div>
-              <div class="login-hint-item" data-demo="ps">
-                <span class="badge badge-green">PS</span>
-                <span>xinhui.ma@uni.ac.uk</span>
-                <span class="text-muted">pass123</span>
-              </div>
-              <div class="login-hint-item" data-demo="st">
-                <span class="badge badge-purple">ST</span>
-                <span>john.whelan@uni.ac.uk</span>
-                <span class="text-muted">pass123</span>
-              </div>
             </div>
           </div>
         </div>
@@ -78,8 +68,8 @@
       <!-- Sidebar -->
       <aside id="sidebar" class="sidebar">
         <div class="sidebar-header">
-          <div class="sidebar-logo">PS</div>
-          <div class="sidebar-title">PS System</div>
+          <div class="sidebar-logo">SP</div>
+          <div class="sidebar-title">Student Portal</div>
         </div>
         <nav id="sidebar-nav" class="sidebar-nav"></nav>
         <div class="sidebar-footer">
@@ -100,7 +90,6 @@
             <p class="banner-subtitle">Submit self-reports, book meetings, and track your progress</p>
           </div>
           <div class="stats-grid stats-grid-4" id="student-stats"></div>
-          <div id="student-ps-card" class="ps-info-card hidden"></div>
           <h2 class="section-heading">Quick Actions</h2>
           <div class="actions-grid">
             <button class="action-card" data-nav="student-submit-report">
@@ -118,7 +107,7 @@
             <button class="action-card" data-nav="student-book-meeting">
               <div class="action-icon bg-teal">📅</div>
               <div class="action-label">Book Meeting</div>
-              <div class="action-desc">Schedule time with your Personal Supervisor</div>
+              <div class="action-desc">Schedule time to chat about your progress</div>
               <div class="action-arrow">Go →</div>
             </button>
             <button class="action-card" data-nav="student-view-meetings">
@@ -176,7 +165,7 @@
         <div id="page-student-book-meeting" class="page-inner hidden">
           <button class="back-btn" data-nav="student-dashboard">← Back to Dashboard</button>
           <h1 class="page-title">Book Meeting</h1>
-          <p class="page-subtitle">Schedule time with your Personal Supervisor</p>
+          <p class="page-subtitle">Schedule a meeting with support staff to discuss your progress</p>
 
           <form id="student-meeting-form" class="card form-card" novalidate>
             <div class="form-group">
@@ -213,191 +202,6 @@
           <div id="student-meetings-past"></div>
         </div>
 
-
-        <!-- ===== PS (PERSONAL SUPERVISOR) PAGES ===== -->
-
-        <!-- PS Dashboard -->
-        <div id="page-ps-dashboard" class="page-inner hidden">
-          <div class="welcome-banner banner-blue">
-            <h1 id="ps-welcome-name" class="banner-title"></h1>
-            <p class="banner-subtitle">Monitor your students and manage meetings</p>
-          </div>
-          <div class="stats-grid stats-grid-4" id="ps-stats"></div>
-          <h2 class="section-heading">Quick Actions</h2>
-          <div class="actions-grid">
-            <button class="action-card" data-nav="ps-my-students" id="ps-action-students">
-              <div class="action-card-header">
-                <div class="action-icon bg-blue">👥</div>
-                <div id="ps-at-risk-badge" class="hidden"></div>
-              </div>
-              <div class="action-label">My Students</div>
-              <div class="action-desc">View dashboard with wellbeing alerts</div>
-              <div class="action-arrow">Go →</div>
-            </button>
-            <button class="action-card" data-nav="ps-student-details">
-              <div class="action-icon bg-indigo">👤</div>
-              <div class="action-label">Student Details</div>
-              <div class="action-desc">View individual reports and history</div>
-              <div class="action-arrow">Go →</div>
-            </button>
-            <button class="action-card" data-nav="ps-book-meeting">
-              <div class="action-icon bg-teal">📅</div>
-              <div class="action-label">Book Meeting</div>
-              <div class="action-desc">Schedule meeting with a student</div>
-              <div class="action-arrow">Go →</div>
-            </button>
-            <button class="action-card" data-nav="ps-manage-meetings">
-              <div class="action-icon bg-purple">📋</div>
-              <div class="action-label">Manage Meetings</div>
-              <div class="action-desc">View and update meeting statuses</div>
-              <div class="action-arrow">Go →</div>
-            </button>
-          </div>
-        </div>
-
-        <!-- PS: My Students -->
-        <div id="page-ps-my-students" class="page-inner hidden">
-          <button class="back-btn" data-nav="ps-dashboard">← Back to Dashboard</button>
-          <h1 class="page-title">My Students Dashboard</h1>
-          <p class="page-subtitle" id="ps-students-count"></p>
-          <div class="card table-card">
-            <table class="data-table" id="ps-students-table">
-              <thead>
-                <tr>
-                  <th>STUDENT</th>
-                  <th class="text-center">REPORTS</th>
-                  <th class="text-center">AVG WELLBEING</th>
-                  <th class="text-center">AVG PROGRESS</th>
-                  <th class="text-center">MEETINGS</th>
-                  <th class="text-center">STATUS</th>
-                </tr>
-              </thead>
-              <tbody id="ps-students-tbody"></tbody>
-            </table>
-          </div>
-          <div id="ps-at-risk-section"></div>
-        </div>
-
-        <!-- PS: Student Details -->
-        <div id="page-ps-student-details" class="page-inner hidden">
-          <button class="back-btn" data-nav="ps-dashboard">← Back to Dashboard</button>
-          <h1 class="page-title">Student Details</h1>
-          <p class="page-subtitle">View individual student reports and meeting history</p>
-
-          <div class="card">
-            <label class="form-label" for="ps-student-select">Select Student</label>
-            <select id="ps-student-select" class="form-select">
-              <option value="">Choose a student...</option>
-            </select>
-          </div>
-
-          <div id="ps-student-detail-content"></div>
-        </div>
-
-        <!-- PS: Book Meeting -->
-        <div id="page-ps-book-meeting" class="page-inner hidden">
-          <button class="back-btn" data-nav="ps-dashboard">← Back to Dashboard</button>
-          <h1 class="page-title">Book Meeting</h1>
-          <p class="page-subtitle">Schedule a meeting with one of your students</p>
-
-          <form id="ps-meeting-form" class="card form-card" novalidate>
-            <div class="form-group">
-              <label class="form-label" for="ps-meeting-student">Select Student <span class="required">*</span></label>
-              <select id="ps-meeting-student" class="form-select">
-                <option value="">Choose a student...</option>
-              </select>
-              <div class="form-error" id="ps-meeting-student-error"></div>
-            </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label class="form-label" for="ps-meeting-date">Date <span class="required">*</span></label>
-                <input type="date" id="ps-meeting-date" class="form-input">
-                <div class="form-error" id="ps-meeting-date-error"></div>
-              </div>
-              <div class="form-group">
-                <label class="form-label" for="ps-meeting-time">Time <span class="required">*</span></label>
-                <input type="time" id="ps-meeting-time" class="form-input">
-                <div class="form-error" id="ps-meeting-time-error"></div>
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="ps-meeting-agenda">Agenda <span class="required">*</span></label>
-              <textarea id="ps-meeting-agenda" class="form-textarea" rows="3" placeholder="Reason for the meeting..."></textarea>
-              <div class="form-error" id="ps-meeting-agenda-error"></div>
-            </div>
-            <button type="submit" class="btn btn-primary btn-full">📅 Book Meeting</button>
-          </form>
-        </div>
-
-        <!-- PS: Manage Meetings -->
-        <div id="page-ps-manage-meetings" class="page-inner hidden">
-          <button class="back-btn" data-nav="ps-dashboard">← Back to Dashboard</button>
-          <h1 class="page-title">Manage Meetings</h1>
-          <p class="page-subtitle" id="ps-meetings-count"></p>
-          <div id="ps-meetings-scheduled"></div>
-          <div id="ps-meetings-past"></div>
-        </div>
-
-
-        <!-- ===== SENIOR TUTOR PAGES ===== -->
-
-        <!-- ST Dashboard -->
-        <div id="page-st-dashboard" class="page-inner hidden">
-          <div class="welcome-banner banner-blue">
-            <h1 id="st-welcome-name" class="banner-title"></h1>
-            <p class="banner-subtitle">Department-wide oversight and PS engagement monitoring</p>
-          </div>
-          <div class="stats-grid stats-grid-4" id="st-stats"></div>
-          <h2 class="section-heading">Quick Actions</h2>
-          <div class="actions-grid">
-            <button class="action-card" data-nav="st-all-students">
-              <div class="action-card-header">
-                <div class="action-icon bg-blue">👥</div>
-                <div id="st-at-risk-badge" class="hidden"></div>
-              </div>
-              <div class="action-label">All Students Overview</div>
-              <div class="action-desc">Department-wide student status and wellbeing</div>
-              <div class="action-arrow">Go →</div>
-            </button>
-            <button class="action-card" data-nav="st-ps-summary">
-              <div class="action-icon bg-indigo">📊</div>
-              <div class="action-label">PS Interaction Summary</div>
-              <div class="action-desc">Supervisor engagement with at-risk students</div>
-              <div class="action-arrow">Go →</div>
-            </button>
-          </div>
-        </div>
-
-        <!-- ST: All Students Overview -->
-        <div id="page-st-all-students" class="page-inner hidden">
-          <button class="back-btn" data-nav="st-dashboard">← Back to Dashboard</button>
-          <h1 class="page-title">All Students Overview</h1>
-          <p class="page-subtitle">Department-wide student status</p>
-          <div class="stats-grid stats-grid-3" id="st-all-stats"></div>
-          <div class="card table-card">
-            <table class="data-table" id="st-students-table">
-              <thead>
-                <tr>
-                  <th>STUDENT</th>
-                  <th>SUPERVISOR</th>
-                  <th class="text-center">AVG W</th>
-                  <th class="text-center">AVG P</th>
-                  <th class="text-center">MEETINGS</th>
-                  <th class="text-center">STATUS</th>
-                </tr>
-              </thead>
-              <tbody id="st-students-tbody"></tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- ST: PS Interaction Summary -->
-        <div id="page-st-ps-summary" class="page-inner hidden">
-          <button class="back-btn" data-nav="st-dashboard">← Back to Dashboard</button>
-          <h1 class="page-title">PS Interaction Summary</h1>
-          <p class="page-subtitle">Supervisor engagement with at-risk students</p>
-          <div id="st-ps-summary-list"></div>
-        </div>
 
       </main>
     </div>
