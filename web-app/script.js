@@ -189,6 +189,7 @@ const ROLE_PAGES = {
 
 function navigateTo(pageId) {
   if (!PAGE_NAV[pageId]) {
+    console.warn(`Unknown pageId "${pageId}", redirecting to student-dashboard`);
     pageId = 'student-dashboard';
   }
   // Hide all page-inner divs
@@ -519,6 +520,7 @@ function initStudentMeetingForm() {
       <div class="success-summary">
         <div><span class="summary-key">When: </span><span class="summary-val">${escHtml(formatDateTime(meeting.dateTime))}</span></div>
         <div><span class="summary-key">Agenda: </span><span class="summary-val">${escHtml(agenda)}</span></div>
+        <div><span class="summary-key">Status: </span><span class="summary-val">${escHtml(meeting.status)}</span></div>
       </div>
       <div class="success-actions">
         <button class="btn btn-outline" id="book-another-btn">Book Another</button>
