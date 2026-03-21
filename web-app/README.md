@@ -1,4 +1,4 @@
-# Personal Supervisor System — Web Application
+# Student Support Portal — Web Application
 
 A standalone, desktop-focused web application built with vanilla HTML, CSS, and JavaScript, based on the [Figma Hi-Fi Prototype](https://www.figma.com/design/XkyTZIPb3u3HI2ZxCRvGWg/Personal-Supervisor-System---Hifi-Prototype).
 
@@ -21,10 +21,10 @@ Only the **Student** role is supported in this version. You can click the studen
 ## Features
 
 ### Student Role
-- **Dashboard** — Welcome banner, stats (reports, avg wellbeing/progress, upcoming meetings), supervisor info card, quick action navigation
+- **Dashboard** — Welcome banner, stats (reports, avg wellbeing/progress, upcoming meetings), quick action navigation
 - **Submit Self-Report** — Rate wellbeing (1–5) and academic progress (1–5) with optional comments; colour-coded rating buttons with confirmation screen
 - **View My Reports** — Full history with wellbeing/progress badges, average stats
-- **Book Meeting** — Schedule a meeting with your Personal Supervisor (date, time, agenda); success confirmation
+- **Book Meeting** — Schedule a meeting (date, time, agenda) with confirmation
 - **My Meetings** — View upcoming and past meetings grouped by status
 
 ### Shared Features
@@ -54,11 +54,9 @@ web-app/
 
 ## Data
 
-All seed data is taken directly from `Personal Supervisor System - Hifi Prototype/src/app/components/hifi/data.ts`:
-- 8 users (5 students, 2 personal supervisors, 1 senior tutor)
+All seed data is taken directly from the original prototype data file:
+- 5 student users
 - 17 self-reports with wellbeing/progress ratings and comments
-- 10 meetings with statuses (Scheduled, Completed, Cancelled)
-
-Supervisor and senior tutor records remain in the seed data to power student-facing views, but only student accounts can sign in.
+- 0 initial meetings (students can add their own)
 
 New data created during the session (reports, meetings) is saved to `localStorage` and persists across refreshes. To reset to seed data, clear `localStorage` keys: `pss_reports`, `pss_meetings`, `pss_session`.

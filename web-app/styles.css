@@ -1,5 +1,5 @@
 /* ===========================
-   Personal Supervisor System
+   Student Support Portal
    Desktop-focused CSS
    =========================== */
 
@@ -414,31 +414,6 @@ html, body { height: 100%; font-family: -apple-system, BlinkMacSystemFont, 'Sego
 .at-risk-wellbeing { font-size: 12px; color: var(--gray-600); }
 .at-risk-date { font-size: 11px; color: var(--gray-400); margin-top: 2px; }
 
-/* --- PS Info Card --- */
-.ps-info-card {
-  background: white; border: 1px solid var(--gray-200);
-  border-radius: var(--radius); padding: 20px; margin-bottom: 24px;
-  box-shadow: var(--shadow);
-  display: flex; align-items: center; gap: 16px;
-}
-.ps-avatar {
-  width: 44px; height: 44px; border-radius: 50%;
-  background: #dbeafe; display: flex; align-items: center; justify-content: center;
-  font-size: 18px; flex-shrink: 0;
-}
-.ps-info-meta { font-size: 11px; font-weight: 700; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
-.ps-info-name { font-size: 15px; font-weight: 700; color: var(--gray-900); margin-bottom: 2px; }
-.ps-info-email { font-size: 12px; color: var(--gray-500); }
-
-/* --- Student Detail in PS view --- */
-.student-detail-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 16px; }
-.student-detail-name { font-size: 18px; font-weight: 700; color: var(--gray-900); margin-bottom: 4px; }
-.student-detail-email { font-size: 12px; color: var(--gray-500); }
-.student-detail-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
-.student-stat { background: var(--gray-50); border-radius: 10px; padding: 14px; }
-.student-stat-label { font-size: 11px; font-weight: 600; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.05em; }
-.student-stat-value { font-size: 22px; font-weight: 800; color: var(--gray-900); margin-top: 4px; }
-
 /* --- Section Sub-headers --- */
 .sub-heading {
   font-size: 11px; font-weight: 700; color: var(--gray-400);
@@ -476,44 +451,6 @@ html, body { height: 100%; font-family: -apple-system, BlinkMacSystemFont, 'Sego
 .success-summary .summary-key { color: var(--gray-500); }
 .success-summary .summary-val { font-weight: 600; color: var(--gray-800); }
 .success-actions { display: flex; gap: 10px; }
-
-/* --- PS Summary Cards --- */
-.ps-summary-card {
-  background: white; border: 1px solid var(--gray-200);
-  border-radius: var(--radius); overflow: hidden;
-  box-shadow: var(--shadow); margin-bottom: 20px;
-}
-.ps-summary-header { padding: 24px; }
-.ps-summary-name { font-size: 17px; font-weight: 700; color: var(--gray-900); margin-bottom: 4px; }
-.ps-summary-email { font-size: 12px; color: var(--gray-500); margin-bottom: 16px; }
-.ps-summary-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 0; }
-.ps-summary-stat { background: var(--gray-50); border-radius: 10px; padding: 14px; }
-.ps-summary-stat-label { font-size: 11px; font-weight: 600; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.05em; }
-.ps-summary-stat-value { font-size: 22px; font-weight: 800; color: var(--gray-900); margin-top: 4px; }
-.ps-summary-stat-value.red { color: var(--red-dark); }
-
-.ps-summary-risk-section {
-  border-top: 1px solid var(--gray-200);
-  background: var(--gray-50); padding: 24px;
-}
-.ps-summary-risk-title {
-  font-size: 11px; font-weight: 700; color: var(--gray-500);
-  text-transform: uppercase; letter-spacing: 0.08em;
-  margin-bottom: 12px; display: flex; align-items: center; gap: 6px;
-}
-.risk-student-row {
-  background: white; border: 1px solid var(--gray-200);
-  border-radius: 10px; padding: 16px;
-  display: flex; align-items: flex-start; justify-content: space-between;
-  margin-bottom: 10px;
-}
-.risk-student-row:last-child { margin-bottom: 0; }
-.risk-student-name { font-size: 14px; font-weight: 700; color: var(--gray-900); margin-bottom: 4px; }
-.risk-student-wb { font-size: 12px; color: var(--gray-600); }
-.risk-student-date { font-size: 11px; color: var(--gray-400); margin-top: 2px; }
-.risk-response-ok { font-size: 12px; font-weight: 700; color: var(--green-dark); display: flex; align-items: center; gap: 4px; }
-.risk-response-bad { font-size: 12px; font-weight: 700; color: var(--red-dark); display: flex; align-items: center; gap: 4px; }
-.risk-response-detail { font-size: 11px; color: var(--gray-400); margin-top: 2px; text-align: right; }
 
 /* --- Toast Notifications --- */
 #toast-container {

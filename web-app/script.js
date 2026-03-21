@@ -1,5 +1,5 @@
 /**
- * Personal Supervisor System — Vanilla JS SPA
+ * Student Support Portal — Vanilla JS SPA
  * Based on data.ts from the Figma Hi-Fi Prototype
  */
 
@@ -10,14 +10,11 @@
    ========================================================= */
 
 const SEED_USERS = [
-  { id: 'S001', name: 'George Spurrier', email: 'george.spurrier@uni.ac.uk', password: 'pass123', role: 'student', assignedPSId: 'PS001' },
-  { id: 'S002', name: 'Tom Brown',       email: 'tom.brown@uni.ac.uk',       password: 'pass123', role: 'student', assignedPSId: 'PS001' },
-  { id: 'S003', name: 'Emma Wilson',     email: 'emma.wilson@uni.ac.uk',     password: 'pass123', role: 'student', assignedPSId: 'PS001' },
-  { id: 'S004', name: 'Priya Sharma',    email: 'priya.sharma@uni.ac.uk',    password: 'pass123', role: 'student', assignedPSId: 'PS002' },
-  { id: 'S005', name: "Liam O'Brien",    email: 'liam.obrien@uni.ac.uk',     password: 'pass123', role: 'student', assignedPSId: 'PS002' },
-  { id: 'PS001', name: 'Dr. Xinhui Ma',   email: 'xinhui.ma@uni.ac.uk',      password: 'pass123', role: 'ps' },
-  { id: 'PS002', name: 'Dr. Emily Smith', email: 'emily.smith@uni.ac.uk',    password: 'pass123', role: 'ps' },
-  { id: 'ST001', name: 'Dr. John Whelan', email: 'john.whelan@uni.ac.uk',    password: 'pass123', role: 'st' },
+  { id: 'S001', name: 'George Spurrier', email: 'george.spurrier@uni.ac.uk', password: 'pass123', role: 'student' },
+  { id: 'S002', name: 'Tom Brown',       email: 'tom.brown@uni.ac.uk',       password: 'pass123', role: 'student' },
+  { id: 'S003', name: 'Emma Wilson',     email: 'emma.wilson@uni.ac.uk',     password: 'pass123', role: 'student' },
+  { id: 'S004', name: 'Priya Sharma',    email: 'priya.sharma@uni.ac.uk',    password: 'pass123', role: 'student' },
+  { id: 'S005', name: "Liam O'Brien",    email: 'liam.obrien@uni.ac.uk',     password: 'pass123', role: 'student' },
 ];
 
 const SEED_REPORTS = [
@@ -40,18 +37,7 @@ const SEED_REPORTS = [
   { id: 'R017', studentId: 'S005', dateTime: '2024-03-08T10:00', wellbeing: 2, progress: 2, comments: 'Things are getting worse.' },
 ];
 
-const SEED_MEETINGS = [
-  { id: 'M001', studentId: 'S001', supervisorId: 'PS001', dateTime: '2024-03-22T14:00', agenda: 'Wellbeing check-in and coursework support', status: 'Scheduled', bookedBy: 'PS001' },
-  { id: 'M002', studentId: 'S001', supervisorId: 'PS001', dateTime: '2024-03-15T10:00', agenda: 'Wellbeing check-in', status: 'Completed', bookedBy: 'PS001' },
-  { id: 'M003', studentId: 'S001', supervisorId: 'PS001', dateTime: '2024-02-20T11:00', agenda: 'Discuss assignment concerns', status: 'Completed', bookedBy: 'S001' },
-  { id: 'M004', studentId: 'S002', supervisorId: 'PS001', dateTime: '2024-03-20T15:00', agenda: 'Mid-term progress review', status: 'Scheduled', bookedBy: 'S002' },
-  { id: 'M005', studentId: 'S002', supervisorId: 'PS001', dateTime: '2024-02-28T10:00', agenda: 'General check-in', status: 'Completed', bookedBy: 'PS001' },
-  { id: 'M006', studentId: 'S003', supervisorId: 'PS001', dateTime: '2024-03-25T11:00', agenda: 'Initial welcome meeting', status: 'Scheduled', bookedBy: 'PS001' },
-  { id: 'M007', studentId: 'S004', supervisorId: 'PS002', dateTime: '2024-03-18T10:00', agenda: 'Progress review', status: 'Completed', bookedBy: 'PS002' },
-  { id: 'M008', studentId: 'S004', supervisorId: 'PS002', dateTime: '2024-03-25T14:00', agenda: 'Follow-up', status: 'Scheduled', bookedBy: 'S004' },
-  { id: 'M009', studentId: 'S005', supervisorId: 'PS002', dateTime: '2024-03-20T09:00', agenda: 'Urgent wellbeing check-in', status: 'Scheduled', bookedBy: 'PS002' },
-  { id: 'M010', studentId: 'S005', supervisorId: 'PS002', dateTime: '2024-03-12T11:00', agenda: 'Discuss support options', status: 'Completed', bookedBy: 'PS002' },
-];
+const SEED_MEETINGS = [];
 
 /* =========================================================
    2. LOCAL STORAGE PERSISTENCE
@@ -81,7 +67,6 @@ const state = {
   reports: [],
   meetings: [],
   currentPage: null,
-  selectedStudentId: null,   // for PS student details
 };
 
 function initState() {
@@ -136,21 +121,6 @@ function getStudentReports(studentId) {
 
 function getStudentMeetings(studentId) {
   return state.meetings.filter(m => m.studentId === studentId);
-}
-
-function getSupervisorMeetings(supervisorId) {
-  return state.meetings.filter(m => m.supervisorId === supervisorId);
-}
-
-function isAtRisk(studentId) {
-  const reports = getStudentReports(studentId);
-  return reports.length > 0 && reports[0].wellbeing <= 2;
-}
-
-function findUser(id) { return state.users.find(u => u.id === id); }
-
-function getMyStudents(supervisorId) {
-  return state.users.filter(u => u.role === 'student' && u.assignedPSId === supervisorId);
 }
 
 /* =========================================================
@@ -276,21 +246,6 @@ function renderStudentDashboard() {
     { label: 'Avg Progress',      value: myReports.length ? avgProgress  : 'N/A' },
     { label: 'Upcoming Meetings', value: upcoming.length },
   ].map(s => `<div class="stat-card"><div class="stat-label">${s.label}</div><div class="stat-value">${s.value}</div></div>`).join('');
-
-  const ps = findUser(u.assignedPSId);
-  const psCard = document.getElementById('student-ps-card');
-  if (ps) {
-    psCard.classList.remove('hidden');
-    psCard.innerHTML = `
-      <div class="ps-avatar">👨‍🏫</div>
-      <div>
-        <div class="ps-info-meta">Your Personal Supervisor</div>
-        <div class="ps-info-name">${escHtml(ps.name)}</div>
-        <div class="ps-info-email">${escHtml(ps.email)}</div>
-      </div>`;
-  } else {
-    psCard.classList.add('hidden');
-  }
 }
 
 /* ---- Student Submit Report ---- */
@@ -390,10 +345,6 @@ function reportCardHtml(r) {
 
 /* ---- Student Book Meeting ---- */
 function renderStudentBookMeeting() {
-  const u   = state.currentUser;
-  const ps  = findUser(u.assignedPSId);
-  document.getElementById('student-booking-ps').textContent = ps ? ps.name : 'Not assigned';
-
   const today = new Date().toISOString().split('T')[0];
   const dateInput = document.getElementById('student-meeting-date');
   const timeInput = document.getElementById('student-meeting-time');
@@ -426,508 +377,32 @@ function renderStudentViewMeetings() {
   const past      = meetings.filter(m => m.status !== 'Scheduled');
 
   document.getElementById('student-meetings-count').textContent = `${meetings.length} total meeting${meetings.length !== 1 ? 's' : ''}`;
-
-  const ps = findUser(u.assignedPSId);
-
   document.getElementById('student-meetings-scheduled').innerHTML = scheduled.length
-    ? `<div class="sub-heading">Upcoming (${scheduled.length})</div>` + scheduled.map(m => studentMeetingCardHtml(m, ps)).join('')
+    ? `<div class="sub-heading">Upcoming (${scheduled.length})</div>` + scheduled.map(m => studentMeetingCardHtml(m)).join('')
     : '';
 
   document.getElementById('student-meetings-past').innerHTML = past.length
-    ? `<div class="sub-heading">Past (${past.length})</div>` + past.map(m => studentMeetingCardHtml(m, ps)).join('')
+    ? `<div class="sub-heading">Past (${past.length})</div>` + past.map(m => studentMeetingCardHtml(m)).join('')
     : '';
 
   if (!meetings.length) {
     document.getElementById('student-meetings-scheduled').innerHTML =
-      `<div class="empty-state"><div class="empty-state-icon">📅</div><div class="empty-state-text">No meetings yet. Book a meeting with your supervisor!</div></div>`;
+      `<div class="empty-state"><div class="empty-state-icon">📅</div><div class="empty-state-text">No meetings yet. Book a meeting to stay on track!</div></div>`;
   }
 }
 
-function studentMeetingCardHtml(m, ps) {
+function studentMeetingCardHtml(m) {
   return `<div class="meeting-card">
     <div class="meeting-card-header">
       <div>
-        <div class="meeting-student">${ps ? escHtml(ps.name) : 'Supervisor'}</div>
+        <div class="meeting-student">Meeting</div>
         <div class="meeting-datetime">${escHtml(formatDateTime(m.dateTime))}</div>
       </div>
       <span class="badge ${getStatusClass(m.status)}">${m.status}</span>
     </div>
     <div class="meeting-agenda">${escHtml(m.agenda)}</div>
-    <div class="meeting-booked-by">Booked by: ${m.bookedBy === state.currentUser.id ? 'You' : 'Supervisor'}</div>
+    <div class="meeting-booked-by">Booked by: ${m.bookedBy === state.currentUser.id ? 'You' : 'Staff'}</div>
   </div>`;
-}
-
-/* ---- PS Dashboard ---- */
-function renderPSDashboard() {
-  const u = state.currentUser;
-  document.getElementById('ps-welcome-name').textContent = `Welcome back, ${u.name.replace('Dr. ', '')}`;
-
-  const myStudents = getMyStudents(u.id);
-  const myMeetings = getSupervisorMeetings(u.id);
-  const upcoming   = myMeetings.filter(m => m.status === 'Scheduled');
-  const atRiskCount = myStudents.filter(s => isAtRisk(s.id)).length;
-
-  document.getElementById('ps-stats').innerHTML = [
-    { label: 'Students',          value: myStudents.length },
-    { label: 'At Risk',           value: atRiskCount, red: atRiskCount > 0 },
-    { label: 'Upcoming Meetings', value: upcoming.length },
-    { label: 'Total Meetings',    value: myMeetings.length },
-  ].map(s => `<div class="stat-card"><div class="stat-label">${s.label}</div>
-    <div class="stat-value ${s.red ? 'red' : ''}">${s.value}</div></div>`).join('');
-
-  const badge = document.getElementById('ps-at-risk-badge');
-  if (atRiskCount > 0) {
-    badge.className = 'at-risk-badge';
-    badge.innerHTML = `⚠ ${atRiskCount} at risk`;
-  } else {
-    badge.className = 'hidden';
-  }
-}
-
-/* ---- PS My Students ---- */
-function renderPSMyStudents() {
-  const u = state.currentUser;
-  const myStudents = getMyStudents(u.id);
-  const atRiskStudents = [];
-
-  document.getElementById('ps-students-count').textContent = `${myStudents.length} student${myStudents.length !== 1 ? 's' : ''} assigned to you`;
-
-  const tbody = document.getElementById('ps-students-tbody');
-  tbody.innerHTML = myStudents.map(s => {
-    const reports  = getStudentReports(s.id);
-    const meetings = getStudentMeetings(s.id);
-    const avgWb  = avg(reports.map(r => r.wellbeing));
-    const avgPg  = avg(reports.map(r => r.progress));
-    const atRisk = reports.length > 0 && reports[0].wellbeing <= 2;
-
-    if (atRisk) atRiskStudents.push({ s, reports, latestW: reports[0].wellbeing, latestDate: reports[0].dateTime });
-
-    const statusBadge = atRisk
-      ? `<span class="badge badge-red">⚠ LOW WELLBEING</span>`
-      : reports.length === 0
-        ? `<span class="badge badge-amber">NO REPORTS</span>`
-        : `<span class="badge badge-green">OK</span>`;
-
-    return `<tr>
-      <td><div class="cell-name">${escHtml(s.name)}</div><div class="cell-email">${escHtml(s.email)}</div></td>
-      <td class="text-center">${reports.length}</td>
-      <td class="text-center">${reports.length ? `<span class="badge ${getWellbeingClass(avgWb)}">${avgWb}</span>` : '<span class="text-muted">N/A</span>'}</td>
-      <td class="text-center">${reports.length ? `<strong>${avgPg}</strong>` : '<span class="text-muted">N/A</span>'}</td>
-      <td class="text-center">${meetings.length}</td>
-      <td class="text-center">${statusBadge}</td>
-    </tr>`;
-  }).join('');
-
-  const section = document.getElementById('ps-at-risk-section');
-  if (atRiskStudents.length) {
-    section.innerHTML = `<div class="at-risk-section">
-      <div class="at-risk-title">⚠ LOW WELLBEING ALERTS</div>
-      ${atRiskStudents.map(({ s, latestW, latestDate }) => `
-        <div class="at-risk-student-card">
-          <div>
-            <div class="at-risk-student-name">${escHtml(s.name)}</div>
-            <div class="at-risk-wellbeing">Latest wellbeing: <strong>${latestW} (${getWellbeingLabel(latestW)})</strong></div>
-            <div class="at-risk-date">Reported: ${formatDateShort(latestDate)}</div>
-          </div>
-          <button class="btn btn-danger btn-sm" data-book-student="${s.id}">📅 Book Meeting</button>
-        </div>`).join('')}
-    </div>`;
-
-    section.querySelectorAll('[data-book-student]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        state.selectedStudentId = btn.dataset.bookStudent;
-        navigateTo('ps-book-meeting');
-      });
-    });
-  } else {
-    section.innerHTML = '';
-  }
-}
-
-/* ---- PS Student Details ---- */
-function renderPSStudentDetails() {
-  const u = state.currentUser;
-  const myStudents = getMyStudents(u.id);
-
-  const select = document.getElementById('ps-student-select');
-  // Repopulate if needed
-  select.innerHTML = '<option value="">Choose a student...</option>';
-  myStudents.forEach(s => {
-    const opt = document.createElement('option');
-    opt.value = s.id;
-    opt.textContent = `${s.name} — ${s.email}`;
-    select.appendChild(opt);
-  });
-
-  // If a student is pre-selected (from at-risk booking flow), show their details
-  if (state.selectedStudentId) {
-    select.value = state.selectedStudentId;
-    renderStudentDetail(state.selectedStudentId);
-  } else {
-    document.getElementById('ps-student-detail-content').innerHTML = '';
-  }
-}
-
-function renderStudentDetail(studentId) {
-  if (!studentId) {
-    document.getElementById('ps-student-detail-content').innerHTML = '';
-    return;
-  }
-
-  const student = findUser(studentId);
-  if (!student) return;
-
-  const reports  = getStudentReports(studentId);
-  const meetings = getStudentMeetings(studentId);
-  const avgWb = avg(reports.map(r => r.wellbeing));
-  const avgPg = avg(reports.map(r => r.progress));
-  const latestW = reports.length ? reports[0].wellbeing : null;
-  const atRisk  = latestW !== null && latestW <= 2;
-
-  let html = '';
-
-  if (atRisk) {
-    html += `<div class="alert alert-red">
-      <div class="alert-icon">⚠</div>
-      <div>
-        <div class="alert-title">Low wellbeing alert — latest rating: ${latestW} (${getWellbeingLabel(latestW)})</div>
-      </div>
-      <button class="btn btn-danger btn-sm" style="margin-left:auto;flex-shrink:0" id="detail-book-btn">📅 Book Meeting</button>
-    </div>`;
-  }
-
-  html += `<div class="card">
-    <div class="student-detail-header">
-      <div>
-        <div class="student-detail-name">${escHtml(student.name)}</div>
-        <div class="student-detail-email">${escHtml(student.email)}</div>
-      </div>
-      <button class="btn btn-primary btn-sm" id="detail-book-btn2">📅 Book Meeting</button>
-    </div>
-    <div class="student-detail-stats">
-      <div class="student-stat"><div class="student-stat-label">Reports</div><div class="student-stat-value">${reports.length}</div></div>
-      <div class="student-stat"><div class="student-stat-label">Avg Wellbeing</div><div class="student-stat-value">${reports.length ? avgWb : 'N/A'}</div></div>
-      <div class="student-stat"><div class="student-stat-label">Avg Progress</div><div class="student-stat-value">${reports.length ? avgPg : 'N/A'}</div></div>
-      <div class="student-stat"><div class="student-stat-label">Meetings</div><div class="student-stat-value">${meetings.length}</div></div>
-    </div>
-  </div>`;
-
-  html += `<div class="sub-heading">RECENT REPORTS (${reports.length})</div>`;
-  if (!reports.length) {
-    html += `<div class="empty-state"><div class="empty-state-icon">📋</div><div class="empty-state-text">No reports submitted by this student.</div></div>`;
-  } else {
-    html += reports.map(r => reportCardHtml(r)).join('');
-  }
-
-  html += `<div class="sub-heading" style="margin-top:24px">MEETING HISTORY (${meetings.length})</div>`;
-  if (!meetings.length) {
-    html += `<div class="empty-state"><div class="empty-state-icon">📅</div><div class="empty-state-text">No meetings scheduled yet.</div></div>`;
-  } else {
-    const supervisor = findUser(state.currentUser.id);
-    html += meetings
-      .sort((a,b) => new Date(b.dateTime) - new Date(a.dateTime))
-      .map(m => `<div class="meeting-card">
-        <div class="meeting-card-header">
-          <div>
-            <div class="meeting-student">${escHtml(student.name)}</div>
-            <div class="meeting-datetime">${escHtml(formatDateTime(m.dateTime))}</div>
-          </div>
-          <span class="badge ${getStatusClass(m.status)}">${m.status}</span>
-        </div>
-        <div class="meeting-agenda">${escHtml(m.agenda)}</div>
-        <div class="meeting-booked-by">Booked by: ${m.bookedBy === state.currentUser.id ? 'You' : 'Student'}</div>
-      </div>`).join('');
-  }
-
-  const content = document.getElementById('ps-student-detail-content');
-  content.innerHTML = html;
-
-  // Book meeting buttons
-  content.querySelectorAll('#detail-book-btn, #detail-book-btn2').forEach(btn => {
-    btn.addEventListener('click', () => {
-      state.selectedStudentId = studentId;
-      navigateTo('ps-book-meeting');
-    });
-  });
-}
-
-/* ---- PS Book Meeting ---- */
-function renderPSBookMeeting() {
-  const u = state.currentUser;
-  const myStudents = getMyStudents(u.id);
-
-  // Repopulate student dropdown
-  const select = document.getElementById('ps-meeting-student');
-  select.innerHTML = '<option value="">Choose a student...</option>';
-  myStudents.forEach(s => {
-    const opt = document.createElement('option');
-    opt.value = s.id;
-    opt.textContent = s.name;
-    select.appendChild(opt);
-  });
-
-  // Pre-select if navigated from at-risk flow
-  if (state.selectedStudentId) {
-    select.value = state.selectedStudentId;
-  }
-
-  const today = new Date().toISOString().split('T')[0];
-  document.getElementById('ps-meeting-date').min = today;
-  document.getElementById('ps-meeting-date').value = '';
-  document.getElementById('ps-meeting-time').value = '';
-  document.getElementById('ps-meeting-agenda').value = '';
-
-  ['ps-meeting-student-error','ps-meeting-date-error','ps-meeting-time-error','ps-meeting-agenda-error'].forEach(id => {
-    document.getElementById(id).textContent = '';
-  });
-
-  const success = document.getElementById('ps-meeting-success');
-  if (success) success.remove();
-  document.getElementById('ps-meeting-form').classList.remove('hidden');
-}
-
-/* ---- PS Manage Meetings ---- */
-function renderPSManageMeetings() {
-  const u = state.currentUser;
-  const myMeetings = getSupervisorMeetings(u.id)
-    .sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime));
-
-  document.getElementById('ps-meetings-count').textContent = `${myMeetings.length} total meeting${myMeetings.length !== 1 ? 's' : ''}`;
-
-  const scheduled = myMeetings.filter(m => m.status === 'Scheduled');
-  const past      = myMeetings.filter(m => m.status !== 'Scheduled');
-
-  document.getElementById('ps-meetings-scheduled').innerHTML = scheduled.length
-    ? `<div class="sub-heading">SCHEDULED (${scheduled.length})</div>` + scheduled.map(m => psMeetingCardHtml(m, true)).join('')
-    : '';
-
-  document.getElementById('ps-meetings-past').innerHTML = past.length
-    ? `<div class="sub-heading">PAST (${past.length})</div>` + past.map(m => psMeetingCardHtml(m, false)).join('')
-    : '';
-
-  if (!myMeetings.length) {
-    document.getElementById('ps-meetings-scheduled').innerHTML =
-      `<div class="empty-state"><div class="empty-state-icon">📅</div><div class="empty-state-text">No meetings yet.</div></div>`;
-  }
-
-  // Attach action button handlers
-  document.querySelectorAll('[data-complete]').forEach(btn => {
-    btn.addEventListener('click', () => handleMeetingComplete(btn.dataset.complete));
-  });
-  document.querySelectorAll('[data-cancel]').forEach(btn => {
-    btn.addEventListener('click', () => handleMeetingCancel(btn.dataset.cancel));
-  });
-}
-
-function psMeetingCardHtml(m, showActions) {
-  const student = findUser(m.studentId);
-  const bookedByPS = m.bookedBy === state.currentUser.id;
-  const actions = showActions && m.status === 'Scheduled'
-    ? `<div class="meeting-actions">
-        <button class="btn btn-success btn-sm" data-complete="${m.id}">✓ Mark Completed</button>
-        <button class="btn btn-outline btn-sm" data-cancel="${m.id}">✕ Cancel</button>
-      </div>`
-    : '';
-
-  return `<div class="meeting-card">
-    <div class="meeting-card-header">
-      <div>
-        <div class="meeting-student">${student ? escHtml(student.name) : 'Unknown'}</div>
-        <div class="meeting-datetime">${escHtml(formatDateTime(m.dateTime))}</div>
-      </div>
-      <span class="badge ${getStatusClass(m.status)}">${m.status}</span>
-    </div>
-    <div class="meeting-agenda">${escHtml(m.agenda)}</div>
-    <div class="meeting-booked-by">Booked by: ${bookedByPS ? 'You' : 'Student'}</div>
-    ${actions}
-  </div>`;
-}
-
-function handleMeetingComplete(meetingId) {
-  showModal({
-    title: 'Mark as Completed?',
-    body: 'Are you sure you want to mark this meeting as completed?',
-    actions: [
-      { label: 'Cancel', className: 'btn-outline', onClick: () => {} },
-      { label: 'Mark Completed', className: 'btn-success', onClick: () => {
-        updateMeetingStatus(meetingId, 'Completed');
-        showToast('Meeting marked as completed', 'success');
-        renderPSManageMeetings();
-      }},
-    ]
-  });
-}
-
-function handleMeetingCancel(meetingId) {
-  showModal({
-    title: 'Cancel Meeting?',
-    body: 'Are you sure you want to cancel this meeting? This action cannot be undone.',
-    actions: [
-      { label: 'Keep Meeting', className: 'btn-outline', onClick: () => {} },
-      { label: 'Cancel Meeting', className: 'btn-danger', onClick: () => {
-        updateMeetingStatus(meetingId, 'Cancelled');
-        showToast('Meeting cancelled', 'error');
-        renderPSManageMeetings();
-      }},
-    ]
-  });
-}
-
-function updateMeetingStatus(meetingId, status) {
-  const idx = state.meetings.findIndex(m => m.id === meetingId);
-  if (idx !== -1) {
-    state.meetings[idx] = { ...state.meetings[idx], status };
-    saveMeetings(state.meetings);
-  }
-}
-
-/* ---- ST Dashboard ---- */
-function renderSTDashboard() {
-  const u = state.currentUser;
-  document.getElementById('st-welcome-name').textContent = `Welcome back, ${u.name.replace('Dr. ', '')}`;
-
-  const allStudents = state.users.filter(u => u.role === 'student');
-  const allPS       = state.users.filter(u => u.role === 'ps');
-  const atRiskCount = allStudents.filter(s => isAtRisk(s.id)).length;
-  const noReports   = allStudents.filter(s => getStudentReports(s.id).length === 0).length;
-
-  document.getElementById('st-stats').innerHTML = [
-    { label: 'Total Students',      value: allStudents.length },
-    { label: 'At Risk',             value: atRiskCount, red: atRiskCount > 0 },
-    { label: 'No Reports',          value: noReports, amber: noReports > 0 },
-    { label: 'Personal Supervisors',value: allPS.length },
-  ].map(s => `<div class="stat-card"><div class="stat-label">${s.label}</div>
-    <div class="stat-value ${s.red ? 'red' : s.amber ? 'amber' : ''}">${s.value}</div></div>`).join('');
-
-  const badge = document.getElementById('st-at-risk-badge');
-  if (atRiskCount > 0) {
-    badge.className = 'at-risk-badge';
-    badge.innerHTML = `⚠ ${atRiskCount} at risk`;
-  } else {
-    badge.className = 'hidden';
-  }
-}
-
-/* ---- ST All Students ---- */
-function renderSTAllStudents() {
-  const allStudents = state.users.filter(u => u.role === 'student');
-
-  const studentData = allStudents.map(s => {
-    const ps       = findUser(s.assignedPSId);
-    const reports  = getStudentReports(s.id);
-    const meetings = getStudentMeetings(s.id);
-    const avgWb = avg(reports.map(r => r.wellbeing));
-    const avgPg = avg(reports.map(r => r.progress));
-    const latestW = reports.length ? reports[0].wellbeing : null;
-    const latestP = reports.length ? reports[0].progress  : null;
-
-    let status, statusClass;
-    if (!reports.length) {
-      status = 'NO REPORTS'; statusClass = 'badge-amber';
-    } else if (latestW !== null && latestW <= 2) {
-      status = 'LOW WELLBEING'; statusClass = 'badge-red';
-    } else if (latestP !== null && latestP <= 2) {
-      status = 'LOW PROGRESS'; statusClass = 'badge-orange';
-    } else {
-      status = 'OK'; statusClass = 'badge-green';
-    }
-
-    return { s, ps, reports, meetings, avgWb, avgPg, status, statusClass };
-  });
-
-  const atRisk    = studentData.filter(d => d.status === 'LOW WELLBEING').length;
-  const noReports = studentData.filter(d => d.status === 'NO REPORTS').length;
-
-  document.getElementById('st-all-stats').innerHTML = [
-    { label: 'Total Students', value: allStudents.length },
-    { label: 'At Risk',        value: atRisk,    red: atRisk > 0 },
-    { label: 'No Reports',     value: noReports, amber: noReports > 0 },
-  ].map(s => `<div class="stat-card"><div class="stat-label">${s.label}</div>
-    <div class="stat-value ${s.red ? 'red' : s.amber ? 'amber' : ''}">${s.value}</div></div>`).join('');
-
-  document.getElementById('st-students-tbody').innerHTML = studentData.map(({ s, ps, reports, meetings, avgWb, avgPg, status, statusClass }) => {
-    const hasWarning = status === 'LOW WELLBEING' || status === 'LOW PROGRESS';
-    return `<tr>
-      <td><div class="cell-name">${escHtml(s.name)}</div></td>
-      <td><div style="font-size:12px;color:var(--gray-500)">${ps ? escHtml(ps.name) : 'Unassigned'}</div></td>
-      <td class="text-center">${reports.length ? `<span class="badge ${getWellbeingClass(avgWb)}">${avgWb}</span>` : '<span class="text-muted">—</span>'}</td>
-      <td class="text-center">${reports.length ? `<strong>${avgPg}</strong>` : '<span class="text-muted">—</span>'}</td>
-      <td class="text-center">${meetings.length}</td>
-      <td class="text-center"><span class="badge ${statusClass}">${hasWarning ? '⚠ ' : ''}${status}</span></td>
-    </tr>`;
-  }).join('');
-}
-
-/* ---- ST PS Summary ---- */
-function renderSTPSSummary() {
-  const allPS = state.users.filter(u => u.role === 'ps');
-
-  const html = allPS.map(ps => {
-    const psStudents = getMyStudents(ps.id);
-    const psMeetings = getSupervisorMeetings(ps.id);
-    const completed  = psMeetings.filter(m => m.status === 'Completed').length;
-    const scheduled  = psMeetings.filter(m => m.status === 'Scheduled').length;
-
-    const atRiskData = psStudents.map(s => {
-      const reports = getStudentReports(s.id);
-      if (!reports.length) return null;
-      const latest = reports[0];
-      if (latest.wellbeing > 2) return null;
-
-      const reportDate = new Date(latest.dateTime);
-      const meetingAfter = psMeetings.find(m =>
-        m.studentId === s.id && new Date(m.dateTime) > reportDate
-      );
-      const responseTime = meetingAfter
-        ? Math.round((new Date(meetingAfter.dateTime) - reportDate) / (1000*60*60*24))
-        : null;
-
-      return { student: s, latestW: latest.wellbeing, reportDate: latest.dateTime, meetingBooked: !!meetingAfter, meetingDate: meetingAfter?.dateTime, responseTime };
-    }).filter(Boolean);
-
-    const statsHtml = [
-      { label: 'Students',       value: psStudents.length },
-      { label: 'Total Meetings', value: psMeetings.length },
-      { label: 'Completed',      value: completed },
-      { label: 'At Risk',        value: atRiskData.length, red: atRiskData.length > 0 },
-    ].map(s => `<div class="ps-summary-stat">
-      <div class="ps-summary-stat-label">${s.label}</div>
-      <div class="ps-summary-stat-value ${s.red ? 'red' : ''}">${s.value}</div>
-    </div>`).join('');
-
-    const riskRowsHtml = atRiskData.length === 0
-      ? '<div class="text-muted" style="font-style:italic">No students flagged</div>'
-      : atRiskData.map(item => `
-        <div class="risk-student-row">
-          <div>
-            <div class="risk-student-name">${escHtml(item.student.name)}</div>
-            <div class="risk-student-wb">Latest wellbeing: <strong>${item.latestW} (${getWellbeingLabel(item.latestW)})</strong></div>
-            <div class="risk-student-date">Last report: ${formatDateShort(item.reportDate)}</div>
-          </div>
-          <div>
-            ${item.meetingBooked
-              ? `<div class="risk-response-ok">✓ Meeting booked</div>
-                 <div class="risk-response-detail">${formatDateShort(item.meetingDate)}</div>
-                 ${item.responseTime !== null ? `<div class="risk-response-detail">Response: ${item.responseTime} days</div>` : ''}`
-              : `<div class="risk-response-bad">✕ No meeting booked</div>`
-            }
-          </div>
-        </div>`).join('');
-
-    return `<div class="ps-summary-card">
-      <div class="ps-summary-header">
-        <div class="ps-summary-name">${escHtml(ps.name)}</div>
-        <div class="ps-summary-email">${escHtml(ps.email)}</div>
-        <div class="ps-summary-stats">${statsHtml}</div>
-      </div>
-      <div class="ps-summary-risk-section">
-        <div class="ps-summary-risk-title">⚠ AT-RISK STUDENT RESPONSES</div>
-        ${riskRowsHtml}
-      </div>
-    </div>`;
-  }).join('');
-
-  document.getElementById('st-ps-summary-list').innerHTML = html;
 }
 
 /* =========================================================
@@ -969,7 +444,7 @@ function initReportForm() {
     const successHtml = `<div id="report-success" class="success-card">
       <div class="success-icon">✅</div>
       <div class="success-title">Report Submitted</div>
-      <div class="success-desc">Your self-report has been recorded. Your Personal Supervisor will be able to see this.</div>
+      <div class="success-desc">Your self-report has been recorded.</div>
       <div class="success-summary">
         <div><span class="summary-key">Wellbeing: </span><span class="summary-val">${report.wellbeing} — ${getWellbeingLabel(report.wellbeing)}</span></div>
         <div><span class="summary-key">Progress: </span><span class="summary-val">${report.progress} — ${getProgressLabel(report.progress)}</span></div>
@@ -1026,7 +501,6 @@ function initStudentMeetingForm() {
     const meeting = {
       id: 'M' + Date.now(),
       studentId: u.id,
-      supervisorId: u.assignedPSId,
       dateTime: `${date}T${time}`,
       agenda,
       status: 'Scheduled',
@@ -1037,14 +511,12 @@ function initStudentMeetingForm() {
     saveMeetings(state.meetings);
     showToast('Meeting booked successfully!', 'success');
 
-    const ps = findUser(u.assignedPSId);
     form.classList.add('hidden');
     const successHtml = `<div id="student-meeting-success" class="success-card">
       <div class="success-icon">📅</div>
       <div class="success-title">Meeting Booked</div>
-      <div class="success-desc">Your meeting with ${ps ? escHtml(ps.name) : 'your supervisor'} has been scheduled.</div>
+      <div class="success-desc">Your meeting has been scheduled.</div>
       <div class="success-summary">
-        <div><span class="summary-key">Supervisor: </span><span class="summary-val">${ps ? escHtml(ps.name) : 'N/A'}</span></div>
         <div><span class="summary-key">When: </span><span class="summary-val">${escHtml(formatDateTime(meeting.dateTime))}</span></div>
         <div><span class="summary-key">Agenda: </span><span class="summary-val">${escHtml(agenda)}</span></div>
       </div>
@@ -1061,77 +533,6 @@ function initStudentMeetingForm() {
       form.reset();
     });
     document.getElementById('view-meetings-btn').addEventListener('click', () => navigateTo('student-view-meetings'));
-  });
-}
-
-/* ---- PS Book Meeting Form ---- */
-function initPSMeetingForm() {
-  const form = document.getElementById('ps-meeting-form');
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-    let valid = true;
-
-    const studentId = document.getElementById('ps-meeting-student').value;
-    const date      = document.getElementById('ps-meeting-date').value;
-    const time      = document.getElementById('ps-meeting-time').value;
-    const agenda    = document.getElementById('ps-meeting-agenda').value.trim();
-
-    if (!studentId) { document.getElementById('ps-meeting-student-error').textContent = 'Please select a student'; valid = false; }
-    else { document.getElementById('ps-meeting-student-error').textContent = ''; }
-    if (!date) { document.getElementById('ps-meeting-date-error').textContent = 'Please select a date'; valid = false; }
-    else { document.getElementById('ps-meeting-date-error').textContent = ''; }
-    if (!time) { document.getElementById('ps-meeting-time-error').textContent = 'Please select a time'; valid = false; }
-    else { document.getElementById('ps-meeting-time-error').textContent = ''; }
-    if (!agenda) { document.getElementById('ps-meeting-agenda-error').textContent = 'Please enter an agenda'; valid = false; }
-    else { document.getElementById('ps-meeting-agenda-error').textContent = ''; }
-
-    if (!valid) return;
-
-    const meeting = {
-      id: 'M' + Date.now(),
-      studentId,
-      supervisorId: state.currentUser.id,
-      dateTime: `${date}T${time}`,
-      agenda,
-      status: 'Scheduled',
-      bookedBy: state.currentUser.id,
-    };
-
-    state.meetings.push(meeting);
-    saveMeetings(state.meetings);
-    state.selectedStudentId = null;
-    showToast('Meeting booked successfully!', 'success');
-
-    const student = findUser(studentId);
-    form.classList.add('hidden');
-    const successHtml = `<div id="ps-meeting-success" class="success-card">
-      <div class="success-icon">📅</div>
-      <div class="success-title">Meeting Booked</div>
-      <div class="success-desc">Meeting with ${student ? escHtml(student.name) : 'student'} has been scheduled.</div>
-      <div class="success-summary">
-        <div><span class="summary-key">Student: </span><span class="summary-val">${student ? escHtml(student.name) : 'N/A'}</span></div>
-        <div><span class="summary-key">When: </span><span class="summary-val">${escHtml(formatDateTime(meeting.dateTime))}</span></div>
-        <div><span class="summary-key">Agenda: </span><span class="summary-val">${escHtml(agenda)}</span></div>
-      </div>
-      <div class="success-actions">
-        <button class="btn btn-outline" id="ps-book-another-btn">Book Another</button>
-        <button class="btn btn-primary" id="ps-view-meetings-btn">View Meetings</button>
-      </div>
-    </div>`;
-    form.insertAdjacentHTML('afterend', successHtml);
-
-    document.getElementById('ps-book-another-btn').addEventListener('click', () => {
-      document.getElementById('ps-meeting-success').remove();
-      form.classList.remove('hidden');
-      form.reset();
-      document.getElementById('ps-meeting-student').innerHTML = '<option value="">Choose a student...</option>';
-      getMyStudents(state.currentUser.id).forEach(s => {
-        const opt = document.createElement('option');
-        opt.value = s.id; opt.textContent = s.name;
-        document.getElementById('ps-meeting-student').appendChild(opt);
-      });
-    });
-    document.getElementById('ps-view-meetings-btn').addEventListener('click', () => navigateTo('ps-manage-meetings'));
   });
 }
 
@@ -1189,7 +590,6 @@ function buildSidebar(user) {
 
 function logout() {
   state.currentUser = null;
-  state.selectedStudentId = null;
   clearSession();
 
   document.getElementById('layout-auth').classList.add('hidden');
@@ -1278,12 +678,6 @@ function initGlobalListeners() {
     if (nav && !e.target.closest('[data-no-nav]')) {
       navigateTo(nav.dataset.nav);
     }
-  });
-
-  // PS Student details select
-  document.getElementById('ps-student-select').addEventListener('change', e => {
-    state.selectedStudentId = e.target.value || null;
-    renderStudentDetail(e.target.value);
   });
 }
 
