@@ -6,23 +6,16 @@
 'use strict';
 
 /* =========================================================
-   1. SEED DATA (from prototype data.ts)
+   1. SEED DATA
    ========================================================= */
 
 const SEED_USERS = [
   { id: 'S001', name: 'George Spurrier', email: 'george.spurrier@hull.ac.uk', password: 'pass123', role: 'student' },
-  { id: 'S002', name: 'Tom Brown',       email: 'tom.brown@hull.ac.uk',       password: 'pass123', role: 'student' },
-  { id: 'S003', name: 'Emma Wilson',     email: 'emma.wilson@hull.ac.uk',     password: 'pass123', role: 'student' },
-  { id: 'S004', name: 'Priya Sharma',    email: 'priya.sharma@hull.ac.uk',    password: 'pass123', role: 'student' },
-  { id: 'S005', name: "Liam O'Brien",    email: 'liam.obrien@hull.ac.uk',     password: 'pass123', role: 'student' },
 ];
 
 const SUPERVISOR_ASSIGNMENTS = {
   S001: { name: 'Dr. Xinhui Ma',   email: 'xinhui.ma@hull.ac.uk',   avatar: '🧑‍🏫' },
-  S002: { name: 'Dr. Leah Singh',  email: 'leah.singh@hull.ac.uk',  avatar: '👩‍🏫' },
-  S003: { name: 'Dr. Peter Nolan', email: 'peter.nolan@hull.ac.uk', avatar: '🧑‍🏫' },
-  S004: { name: 'Dr. Sarah Khan',  email: 'sarah.khan@hull.ac.uk',  avatar: '👩‍🏫' },
-  S005: { name: 'Dr. Daniel Li',   email: 'daniel.li@hull.ac.uk',   avatar: '🧑‍🏫' },
+
   default: { name: 'Personal Supervisor', email: 'support@hull.ac.uk', avatar: '👥' },
 };
 
@@ -32,18 +25,6 @@ const SEED_REPORTS = [
   { id: 'R003', studentId: 'S001', dateTime: '2024-03-04T09:00', wellbeing: 3, progress: 4, comments: 'Good week overall.' },
   { id: 'R004', studentId: 'S001', dateTime: '2024-02-26T11:45', wellbeing: 4, progress: 4, comments: '' },
   { id: 'R005', studentId: 'S001', dateTime: '2024-02-19T16:00', wellbeing: 2, progress: 2, comments: 'Really behind on assignment. Need help.' },
-  { id: 'R006', studentId: 'S002', dateTime: '2024-03-17T13:00', wellbeing: 4, progress: 5, comments: 'Great week. Finished project early.' },
-  { id: 'R007', studentId: 'S002', dateTime: '2024-03-10T10:00', wellbeing: 4, progress: 4, comments: '' },
-  { id: 'R008', studentId: 'S002', dateTime: '2024-03-03T11:30', wellbeing: 5, progress: 4, comments: 'Enjoying the module.' },
-  { id: 'R009', studentId: 'S002', dateTime: '2024-02-25T14:00', wellbeing: 4, progress: 5, comments: '' },
-  { id: 'R010', studentId: 'S002', dateTime: '2024-02-18T09:30', wellbeing: 3, progress: 4, comments: 'Bit stressed about exams.' },
-  { id: 'R011', studentId: 'S002', dateTime: '2024-02-11T10:00', wellbeing: 4, progress: 4, comments: '' },
-  { id: 'R012', studentId: 'S002', dateTime: '2024-02-04T15:00', wellbeing: 5, progress: 5, comments: 'Best week yet.' },
-  { id: 'R013', studentId: 'S002', dateTime: '2024-01-28T11:00', wellbeing: 4, progress: 4, comments: '' },
-  { id: 'R014', studentId: 'S004', dateTime: '2024-03-16T10:00', wellbeing: 3, progress: 3, comments: 'Average week.' },
-  { id: 'R015', studentId: 'S004', dateTime: '2024-03-09T14:30', wellbeing: 4, progress: 4, comments: '' },
-  { id: 'R016', studentId: 'S005', dateTime: '2024-03-15T16:00', wellbeing: 1, progress: 2, comments: 'Really struggling with everything. Need to talk to someone.' },
-  { id: 'R017', studentId: 'S005', dateTime: '2024-03-08T10:00', wellbeing: 2, progress: 2, comments: 'Things are getting worse.' },
 ];
 
 const SEED_MEETINGS = []; // Intentionally empty; students can create meetings as needed
