@@ -53,9 +53,7 @@ function loadData() {
 
 function saveReports(reports)  { localStorage.setItem(LS_KEYS.reports,  JSON.stringify(reports)); }
 function saveMeetings(meetings){ localStorage.setItem(LS_KEYS.meetings, JSON.stringify(meetings)); }
-function saveSession(userId)   { localStorage.setItem(LS_KEYS.session, userId); }
 function clearSession()        { localStorage.removeItem(LS_KEYS.session); }
-function getSavedSession()     { return localStorage.getItem(LS_KEYS.session); }
 
 /* =========================================================
    3. APP STATE
@@ -551,7 +549,6 @@ function login(email, password) {
 
 function setCurrentUser(user) {
   state.currentUser = user;
-  saveSession(user.id);
   showAuthLayout(user);
 }
 
@@ -694,16 +691,8 @@ function boot() {
   initStudentMeetingForm();
   initGlobalListeners();
 
-  // Restore session
-  const savedId = getSavedSession();
-  if (savedId) {
-    const user = state.users.find(u => u.id === savedId && u.role === 'student');
-    if (user) {
-      setCurrentUser(user);
-      return;
-    }
-    clearSession();
-  }
+  // Clear any legacy saved sessions so the app always starts at login
+  clearSession();
 
   // Show login
   document.getElementById('page-login').classList.add('active');
