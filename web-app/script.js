@@ -40,20 +40,20 @@ const SEED_REPORTS = [
 const SEED_MEETINGS = []; // Intentionally empty; students can create meetings as needed
 
 /* =========================================================
-   2. LOCAL STORAGE PERSISTENCE
+   2. IN-MEMORY SESSION DATA
    ========================================================= */
 
-const LS_KEYS = { reports: 'pss_reports', meetings: 'pss_meetings', session: 'pss_session' };
-
 function loadData() {
-  const reports  = JSON.parse(localStorage.getItem(LS_KEYS.reports)  || 'null') || [...SEED_REPORTS];
-  const meetings = JSON.parse(localStorage.getItem(LS_KEYS.meetings) || 'null') || [...SEED_MEETINGS];
-  return { reports, meetings };
+  return {
+    reports: [...SEED_REPORTS],
+    meetings: [...SEED_MEETINGS],
+  };
 }
 
-function saveReports(reports)  { localStorage.setItem(LS_KEYS.reports,  JSON.stringify(reports)); }
-function saveMeetings(meetings){ localStorage.setItem(LS_KEYS.meetings, JSON.stringify(meetings)); }
-function clearSession()        { localStorage.removeItem(LS_KEYS.session); }
+// Persistence is intentionally disabled; these are no-ops to keep call sites simple.
+function saveReports()  {}
+function saveMeetings() {}
+function clearSession() {}
 
 /* =========================================================
    3. APP STATE
