@@ -17,6 +17,15 @@ const SEED_USERS = [
   { id: 'S005', name: "Liam O'Brien",    email: 'liam.obrien@uni.ac.uk',     password: 'pass123', role: 'student' },
 ];
 
+const SUPERVISOR_ASSIGNMENTS = {
+  S001: { name: 'Dr. Xinhui Ma',   email: 'xinhui.ma@uni.ac.uk',   avatar: '🧑‍🏫' },
+  S002: { name: 'Dr. Leah Singh',  email: 'leah.singh@uni.ac.uk',  avatar: '👩‍🏫' },
+  S003: { name: 'Dr. Peter Nolan', email: 'peter.nolan@uni.ac.uk', avatar: '🧑‍🏫' },
+  S004: { name: 'Dr. Sarah Khan',  email: 'sarah.khan@uni.ac.uk',  avatar: '👩‍🏫' },
+  S005: { name: 'Dr. Daniel Li',   email: 'daniel.li@uni.ac.uk',   avatar: '🧑‍🏫' },
+  default: { name: 'Personal Supervisor', email: 'support@uni.ac.uk', avatar: '👥' },
+};
+
 const SEED_REPORTS = [
   { id: 'R001', studentId: 'S001', dateTime: '2024-03-18T14:30', wellbeing: 2, progress: 3, comments: 'Struggling to keep up with coursework this week. Feeling anxious about the upcoming deadline.' },
   { id: 'R002', studentId: 'S001', dateTime: '2024-03-11T10:15', wellbeing: 3, progress: 3, comments: 'Managing workload but finding it challenging.' },
@@ -109,6 +118,10 @@ function formatDateTime(dt) {
 function formatDateShort(dt) {
   const d = new Date(dt);
   return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+function getSupervisorForStudent(studentId) {
+  return SUPERVISOR_ASSIGNMENTS[studentId] || SUPERVISOR_ASSIGNMENTS.default;
 }
 
 function getStudentReports(studentId) {
@@ -228,10 +241,25 @@ function renderPage(pageId) {
   }
 }
 
+function supervisorCardHtml(supervisor, { compact = false } = {}) {
+  const cls = compact ? 'supervisor-card compact' : 'supervisor-card';
+  return `<div class="${cls}">
+    <div class="supervisor-avatar">${escHtml(supervisor.avatar || '👥')}</div>
+    <div class="supervisor-details">
+      <div class="supervisor-label">${compact ? 'Personal Supervisor' : 'Your Personal Supervisor'}</div>
+      <div class="supervisor-name">${escHtml(supervisor.name)}</div>
+      <div class="supervisor-email">${escHtml(supervisor.email)}</div>
+    </div>
+  </div>`;
+}
+
 /* ---- Student Dashboard ---- */
 function renderStudentDashboard() {
   const u = state.currentUser;
   document.getElementById('student-welcome-name').textContent = `Welcome back, ${u.name.split(' ')[0]}`;
+
+  const supervisor = getSupervisorForStudent(u.id);
+  document.getElementById('student-supervisor-card').innerHTML = supervisorCardHtml(supervisor);
 
   const myReports   = getStudentReports(u.id);
   const myMeetings  = state.meetings.filter(m => m.studentId === u.id);
@@ -358,6 +386,9 @@ function renderStudentBookMeeting() {
   ['student-meeting-date-error','student-meeting-time-error','student-meeting-agenda-error'].forEach(id => {
     document.getElementById(id).textContent = '';
   });
+
+  const supervisor = getSupervisorForStudent(state.currentUser.id);
+  document.getElementById('student-booking-ps').innerHTML = supervisorCardHtml(supervisor, { compact: true });
 
   // Remove success card if any
   const success = document.getElementById('student-meeting-success');
