@@ -393,6 +393,9 @@ html, body { height: 100%; font-family: -apple-system, BlinkMacSystemFont, 'Sego
 .meeting-datetime { font-size: 12px; color: var(--gray-500); margin-top: 2px; }
 .meeting-agenda { font-size: 13px; color: var(--gray-700); margin-bottom: 8px; }
 .meeting-booked-by { font-size: 11px; color: var(--gray-400); margin-bottom: 12px; }
+.meeting-supervisor { font-size: 11px; color: var(--gray-600); display: flex; flex-wrap: wrap; gap: 4px; }
+.meeting-supervisor .label { font-weight: 700; color: var(--gray-600); }
+.meeting-supervisor .email { color: var(--gray-500); }
 .meeting-actions { display: flex; gap: 8px; border-top: 1px solid var(--gray-100); padding-top: 12px; }
 
 .report-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; }
