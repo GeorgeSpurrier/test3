@@ -4,19 +4,7 @@ A standalone, desktop-focused web application built with vanilla HTML, CSS, and 
 
 ## Quick Start
 
-Open `web-app/index.html` directly in any modern desktop browser — no server or build step required.
-
-## Demo Credentials
-
-| Role | Email | Password |
-|------|-------|----------|
-| Student | george.spurrier@hull.ac.uk | pass123 |
-| Student | tom.brown@hull.ac.uk | pass123 |
-| Student | emma.wilson@hull.ac.uk | pass123 |
-| Student | priya.sharma@hull.ac.uk | pass123 |
-| Student | liam.obrien@hull.ac.uk | pass123 |
-
-Only the **Student** role is supported in this version. You can click the student demo credential on the login page to auto-fill it.
+Open `web-app/index.html` directly in any modern desktop browser — no server or build step required. Sign in with valid student credentials provided for your environment.
 
 ## Features
 
