@@ -10,20 +10,20 @@
    ========================================================= */
 
 const SEED_USERS = [
-  { id: 'S001', name: 'George Spurrier', email: 'george.spurrier@uni.ac.uk', password: 'pass123', role: 'student' },
-  { id: 'S002', name: 'Tom Brown',       email: 'tom.brown@uni.ac.uk',       password: 'pass123', role: 'student' },
-  { id: 'S003', name: 'Emma Wilson',     email: 'emma.wilson@uni.ac.uk',     password: 'pass123', role: 'student' },
-  { id: 'S004', name: 'Priya Sharma',    email: 'priya.sharma@uni.ac.uk',    password: 'pass123', role: 'student' },
-  { id: 'S005', name: "Liam O'Brien",    email: 'liam.obrien@uni.ac.uk',     password: 'pass123', role: 'student' },
+  { id: 'S001', name: 'George Spurrier', email: 'george.spurrier@hull.ac.uk', password: 'pass123', role: 'student' },
+  { id: 'S002', name: 'Tom Brown',       email: 'tom.brown@hull.ac.uk',       password: 'pass123', role: 'student' },
+  { id: 'S003', name: 'Emma Wilson',     email: 'emma.wilson@hull.ac.uk',     password: 'pass123', role: 'student' },
+  { id: 'S004', name: 'Priya Sharma',    email: 'priya.sharma@hull.ac.uk',    password: 'pass123', role: 'student' },
+  { id: 'S005', name: "Liam O'Brien",    email: 'liam.obrien@hull.ac.uk',     password: 'pass123', role: 'student' },
 ];
 
 const SUPERVISOR_ASSIGNMENTS = {
-  S001: { name: 'Dr. Xinhui Ma',   email: 'xinhui.ma@uni.ac.uk',   avatar: '🧑‍🏫' },
-  S002: { name: 'Dr. Leah Singh',  email: 'leah.singh@uni.ac.uk',  avatar: '👩‍🏫' },
-  S003: { name: 'Dr. Peter Nolan', email: 'peter.nolan@uni.ac.uk', avatar: '🧑‍🏫' },
-  S004: { name: 'Dr. Sarah Khan',  email: 'sarah.khan@uni.ac.uk',  avatar: '👩‍🏫' },
-  S005: { name: 'Dr. Daniel Li',   email: 'daniel.li@uni.ac.uk',   avatar: '🧑‍🏫' },
-  default: { name: 'Personal Supervisor', email: 'support@uni.ac.uk', avatar: '👥' },
+  S001: { name: 'Dr. Xinhui Ma',   email: 'xinhui.ma@hull.ac.uk',   avatar: '🧑‍🏫' },
+  S002: { name: 'Dr. Leah Singh',  email: 'leah.singh@hull.ac.uk',  avatar: '👩‍🏫' },
+  S003: { name: 'Dr. Peter Nolan', email: 'peter.nolan@hull.ac.uk', avatar: '🧑‍🏫' },
+  S004: { name: 'Dr. Sarah Khan',  email: 'sarah.khan@hull.ac.uk',  avatar: '👩‍🏫' },
+  S005: { name: 'Dr. Daniel Li',   email: 'daniel.li@hull.ac.uk',   avatar: '🧑‍🏫' },
+  default: { name: 'Personal Supervisor', email: 'support@hull.ac.uk', avatar: '👥' },
 };
 
 const SEED_REPORTS = [
@@ -422,6 +422,7 @@ function renderStudentViewMeetings() {
 }
 
 function studentMeetingCardHtml(m) {
+  const supervisor = getSupervisorForStudent(m.studentId);
   return `<div class="meeting-card">
     <div class="meeting-card-header">
       <div>
@@ -432,6 +433,11 @@ function studentMeetingCardHtml(m) {
     </div>
     <div class="meeting-agenda">${escHtml(m.agenda)}</div>
     <div class="meeting-booked-by">Booked by: ${m.bookedBy === state.currentUser.id ? 'You' : 'Staff'}</div>
+    <div class="meeting-supervisor">
+      <span class="label">Personal Supervisor: </span>
+      <span class="name">${escHtml(supervisor.name)}</span>
+      <span class="email">(${escHtml(supervisor.email)})</span>
+    </div>
   </div>`;
 }
 
@@ -672,7 +678,7 @@ function initLoginPage() {
   document.querySelectorAll('[data-demo]').forEach(item => {
     item.addEventListener('click', () => {
       const demos = {
-        student: { email: 'george.spurrier@uni.ac.uk', pass: 'pass123' },
+        student: { email: 'george.spurrier@hull.ac.uk', pass: 'pass123' },
       };
       const d = demos[item.dataset.demo];
       if (d) { emailEl.value = d.email; passEl.value = d.pass; }
