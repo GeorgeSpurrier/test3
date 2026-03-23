@@ -654,17 +654,6 @@ function initLoginPage() {
 
     setCurrentUser(user);
   });
-
-  // Demo credential fill
-  document.querySelectorAll('[data-demo]').forEach(item => {
-    item.addEventListener('click', () => {
-      const demos = {
-        student: { email: 'george.spurrier@hull.ac.uk', pass: 'pass123' },
-      };
-      const d = demos[item.dataset.demo];
-      if (d) { emailEl.value = d.email; passEl.value = d.pass; }
-    });
-  });
 }
 
 /* =========================================================
