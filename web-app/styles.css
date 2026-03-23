@@ -188,6 +188,36 @@ html, body { height: 100%; font-family: -apple-system, BlinkMacSystemFont, 'Sego
 .table-card { padding: 0; overflow: hidden; }
 .form-card { max-width: 640px; }
 
+.supervisor-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.supervisor-card .supervisor-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--gray-100);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+}
+.supervisor-details { display: flex; flex-direction: column; gap: 2px; }
+.supervisor-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gray-500);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.supervisor-name { font-size: 17px; font-weight: 800; color: var(--gray-900); }
+.supervisor-email { font-size: 13px; color: var(--gray-600); }
+.supervisor-card.compact { gap: 10px; }
+.supervisor-card.compact .supervisor-avatar { width: 44px; height: 44px; font-size: 20px; }
+.supervisor-card.compact .supervisor-name { font-size: 15px; }
+.supervisor-card.compact .supervisor-label { font-size: 10px; }
+
 /* --- Welcome Banner --- */
 .welcome-banner {
   border-radius: var(--radius);
