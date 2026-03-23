@@ -31,7 +31,6 @@ Only the **Student** role is supported in this version. You can click the studen
 - **Toast notifications** — Success/error/info pop-ups for all key actions
 - **Modal confirmations** — For destructive actions (cancel meeting, sign out)
 - **LocalStorage persistence** — All new reports and meetings survive page refresh; seed data auto-populated on first visit
-- **Session persistence** — Login session restored on page reload
 - **Sidebar navigation** — Nav with active-page highlighting
 - **Form validation** — All required fields validated before submission
 
@@ -59,4 +58,4 @@ All seed data is taken directly from the original prototype data file:
 - 17 self-reports with wellbeing/progress ratings and comments
 - 0 initial meetings (students can add their own)
 
-New data created during the session (reports, meetings) is saved to `localStorage` and persists across refreshes. To reset to seed data, clear `localStorage` keys: `pss_reports`, `pss_meetings`, `pss_session`.
+New data created during the session (reports, meetings) is saved to `localStorage` and persists across refreshes. To reset to seed data, clear `localStorage` keys: `pss_reports`, `pss_meetings`.
