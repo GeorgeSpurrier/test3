@@ -96,11 +96,6 @@ function formatDateTime(dt) {
     + ' at ' + d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
 }
 
-function formatDateShort(dt) {
-  const d = new Date(dt);
-  return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
-}
-
 function getSupervisorForStudent(studentId) {
   return SUPERVISOR_ASSIGNMENTS[studentId] || SUPERVISOR_ASSIGNMENTS.default;
 }
@@ -109,10 +104,6 @@ function getStudentReports(studentId) {
   return state.reports
     .filter(r => r.studentId === studentId)
     .sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime));
-}
-
-function getStudentMeetings(studentId) {
-  return state.meetings.filter(m => m.studentId === studentId);
 }
 
 /* =========================================================
