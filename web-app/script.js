@@ -14,7 +14,7 @@ const SEED_USERS = [
 ];
 
 const SUPERVISOR_ASSIGNMENTS = {
-  S001: { name: 'Dr. Xinhui Ma',   email: 'xinhui.ma@hull.ac.uk',   avatar: '🧑‍🏫' },
+  S001: { name: 'Dr. Xinhui Ma',   email: 'xinhui.ma@hull.ac.uk',   avatar: 'Web Assets/Dr Xinhui Ma.png' },
 
   default: { name: 'Personal Supervisor', email: 'support@hull.ac.uk', avatar: '👥' },
 };
@@ -224,8 +224,13 @@ function renderPage(pageId) {
 
 function supervisorCardHtml(supervisor, { compact = false } = {}) {
   const cls = compact ? 'supervisor-card compact' : 'supervisor-card';
+  const avatar = supervisor.avatar || '👥';
+  const avatarIsImage = typeof avatar === 'string' && /\.(png|jpe?g|gif|webp|svg)$/i.test(avatar);
+  const avatarHtml = avatarIsImage
+    ? `<img src="${escHtml(avatar)}" alt="${escHtml(supervisor.name)}" class="supervisor-avatar-img">`
+    : escHtml(avatar);
   return `<div class="${cls}">
-    <div class="supervisor-avatar">${escHtml(supervisor.avatar || '👥')}</div>
+    <div class="supervisor-avatar">${avatarHtml}</div>
     <div class="supervisor-details">
       <div class="supervisor-label">${compact ? 'Personal Supervisor' : 'Your Personal Supervisor'}</div>
       <div class="supervisor-name">${escHtml(supervisor.name)}</div>

@@ -203,6 +203,13 @@ html, body { height: 100%; font-family: -apple-system, BlinkMacSystemFont, 'Sego
   justify-content: center;
   font-size: 26px;
 }
+.supervisor-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
 .supervisor-details { display: flex; flex-direction: column; gap: 2px; }
 .supervisor-label {
   font-size: 11px;
